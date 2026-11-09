@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head::head('Formulario Estación Meteorológica')"></head>
+<body>
+<header th:replace="fragments/header::header"></header>
+<main class="container mt-5">
+    <h1 th:text="${estacionMeteorologica.id == null ? 'Nueva Estación' : 'Editar Estación'}"></h1>
+
+    <form th:action="@{${estacionMeteorologica.id == null ? '/estaciones/insert' : '/estaciones/update'}}"
+          th:object="${estacionMeteorologica}" method="post" class="mt-4">
+
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="mb-3">
+            <label for="codigo" class="form-label">Código:</label>
+            <input type="text" th:field="*{codigo}" id="codigo" class="form-control" required />
+            <div th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}" class="text-danger"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="nombre" class="form-label">Nombre:</label>
+            <input type="text" th:field="*{nombre}" id="nombre" class="form-control" required />
+            <div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="text-danger"></div>
+        </div>
+
+        <div class="mb-3">
+            <label for="fechaInstalacion" class="form-label">Fecha de Instalación (Fecha):</label>
+            <input type="date" th:field="*{fechaInstalacion}" id="fechaInstalacion" class="form-control" required />
+            <div th:if="${#fields.hasErrors('fechaInstalacion')}" th:errors="*{fechaInstalacion}" class="text-danger"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" th:text="${estacionMeteorologica.id == null ? 'Crear' : 'Actualizar'}"></button>
+    </form>
+
+    <a th:href="@{/estaciones}" class="btn btn-secondary mt-3">Volver al Listado</a>
+</main>
+<footer th:replace="fragments/footer::footer"></footer>
+</body>
+</html>
+</html>

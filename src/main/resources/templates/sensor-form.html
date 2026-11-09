@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head::head('Formulario de Sensor')"></head>
+<body>
+<header th:replace="fragments/header::header"></header>
+<main class="container mt-5">
+    <h1 th:text="${sensor.id == null ? 'Nuevo Sensor' : 'Editar Sensor'}"></h1>
+
+    <form th:action="@{${sensor.id == null ? '/sensores/insert' : '/sensores/update'}}"
+          th:object="${sensor}" method="post" class="mt-4">
+
+        <input type="hidden" th:field="*{id}" />
+
+        <div class="mb-3">
+            <label for="modelo" class="form-label">Modelo:</label>
+            <input type="text" th:field="*{modelo}" id="modelo" class="form-control" required />
+        </div>
+
+        <div class="mb-3 form-check">
+            <input type="checkbox" th:field="*{activo}" id="activo" class="form-check-input" />
+            <label for="activo" class="form-check-label">Activo (Boolean)</label>
+        </div>
+
+        <div class="mb-3">
+            <label for="rangoMedicion" class="form-label">Rango de Medición (Número):</label>
+            <input type="number" th:field="*{rangoMedicion}" id="rangoMedicion" class="form-control" required />
+        </div>
+
+        <div class="mb-3">
+            <label for="estacionId" class="form-label">Estación Meteorológica (JOIN):</label>
+            <select th:field="*{estacionId}" id="estacionId" class="form-control" required>
+                <option value="">Seleccione una estación</option>
+                <option th:each="est : ${listEstaciones}" th:value="${est.id}" th:text="${est.nombre}"></option>
+            </select>
+        </div>
+
+        <button type="submit" class="btn btn-primary" th:text="${sensor.id == null ? 'Crear' : 'Actualizar'}"></button>
+    </form>
+
+    <a th:href="@{/sensores}" class="btn btn-secondary mt-3">Volver al Listado</a>
+</main>
+<footer th:replace="fragments/footer::footer"></footer>
+</body>
+</html>

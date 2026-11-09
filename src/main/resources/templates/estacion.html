@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head::head('Listado de Estaciones Meteorológicas')"></head>
+<body>
+<header th:replace="fragments/header::header"></header>
+<main class="container mt-5">
+    <h1>Estaciones Meteorológicas</h1>
+
+    <div th:if="${errorMessage}" class="alert alert-danger" th:text="${errorMessage}"></div>
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Código</th>
+            <th>Nombre</th>
+            <th>Fecha Instalación (Fecha)</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="estacion : ${listEstaciones}">
+            <td th:text="${estacion.id}"></td>
+            <td th:text="${estacion.codigo}"></td>
+            <td th:text="${estacion.nombre}"></td>
+            <td th:text="${estacion.fechaInstalacion}"></td> <!-- Atributo Fecha Visible -->
+            <td>
+                <a th:href="@{/estaciones/edit(id=${estacion.id})}" class="btn btn-primary btn-sm">Editar</a>
+                <form th:action="@{/estaciones/delete}" method="post" class="d-inline">
+                    <input type="hidden" name="id" th:value="${estacion.id}"/>
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminar?');">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/estaciones/new}" class="btn btn-success mt-3">Nueva Estación</a>
+</main>
+<footer th:replace="fragments/footer::footer"></footer>
+</body>
+</html>

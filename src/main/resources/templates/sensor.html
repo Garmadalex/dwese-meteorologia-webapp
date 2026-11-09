@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head::head('Listado de Sensores')"></head>
+<body>
+<header th:replace="fragments/header::header"></header>
+<main class="container mt-5">
+    <h1>Sensores Meteorológicos</h1>
+
+    <div th:if="${successMessage}" class="alert alert-success" th:text="${successMessage}"></div>
+
+    <table class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Modelo</th>
+            <th>Activo (Boolean)</th>
+            <th>Rango Medición (Número)</th>
+            <th>ID Estación (JOIN)</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sensor : ${listSensores}">
+            <td th:text="${sensor.id}"></td>
+            <td th:text="${sensor.modelo}"></td>
+            <td th:text="${sensor.activo ? 'Sí' : 'No'}"></td> <!-- Atributo Boolean Visible -->
+            <td th:text="${sensor.rangoMedicion}"></td> <!-- Atributo Número Visible -->
+            <td th:text="${sensor.estacionId}"></td> <!-- Relación JOIN -->
+            <td>
+                <a th:href="@{/sensores/edit(id=${sensor.id})}" class="btn btn-primary btn-sm">Editar</a>
+                <form th:action="@{/sensores/delete}" method="post" class="d-inline">
+                    <input type="hidden" name="id" th:value="${sensor.id}"/>
+                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Seguro que deseas eliminar este sensor?');">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/sensores/new}" class="btn btn-success mt-3">Nuevo Sensor</a>
+</main>
+<footer th:replace="fragments/footer::footer"></footer>
+</body>
+</html>
